@@ -19,6 +19,7 @@ namespace UnitTests
 
             var serialized = x.Serialize();
 
+            Assert.AreEqual(bytes.Length, serialized.Length);
             foreach (byte b in serialized)
             {
                 Trace.Write(string.Format("{0:X2} ", b));
