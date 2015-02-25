@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22512.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructInterop", "StructInterop\StructInterop.csproj", "{972B735C-796B-453D-93FC-95C6B90547FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{02C374B9-A0EA-4E79-9C76-BC5F32A51E1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{972B735C-796B-453D-93FC-95C6B90547FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{972B735C-796B-453D-93FC-95C6B90547FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{972B735C-796B-453D-93FC-95C6B90547FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{972B735C-796B-453D-93FC-95C6B90547FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C374B9-A0EA-4E79-9C76-BC5F32A51E1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C374B9-A0EA-4E79-9C76-BC5F32A51E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C374B9-A0EA-4E79-9C76-BC5F32A51E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C374B9-A0EA-4E79-9C76-BC5F32A51E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
