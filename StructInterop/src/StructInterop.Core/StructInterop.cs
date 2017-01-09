@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
@@ -7,14 +8,14 @@ namespace StructInterop.Core
 {
     public static class StructInterop
     {
-        static readonly ConstructorInfo IntPtrCtor = typeof(IntPtr).GetTypeInfo().GetConstructor(new[] { typeof(void*) });
-        static readonly MethodInfo MarshalCopy = typeof(Marshal).GetTypeInfo().GetMethod("Copy", new[] { typeof(IntPtr), typeof(byte[]), typeof(int), typeof(int) });
+        static readonly ConstructorInfo IntPtrCtor = typeof(IntPtr).GetTypeInfo().DeclaredConstructors.First(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(void*));
+        static readonly MethodInfo MarshalCopy = typeof(Marshal).GetTypeInfo().GetDeclaredMethods("Copy").First(x => x.GetParameters()[1].ParameterType == typeof(byte[]));
         private static class DelegateHolder<T> where T : struct
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             // ReSharper disable StaticMemberInGenericType
             public static readonly Type TypeOfT = typeof(T);
-            public static readonly int SizeInBytes = Marshal.SizeOf<T>();
+            public static readonly int SizeInBytes = Marshal.SizeOf(TypeOfT);
 
             public static readonly Func<T, byte[]> Serialize = CreateSerializationDelegate();
             public static readonly Func<byte[], T> Deserialize = CreateDeserializationDelegate();
@@ -34,7 +35,7 @@ namespace StructInterop.Core
                     new[] { TypeOfT },
                     typeof(StructInterop).GetTypeInfo().Assembly.ManifestModule);
                 //dm.DefineParameter(1, ParameterAttributes.None, "value");
-
+                
                 var generator = dm.GetILGenerator();
                 generator.DeclareLocal(typeof(byte[]));
 
