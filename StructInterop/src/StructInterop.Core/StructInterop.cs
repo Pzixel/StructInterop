@@ -10,6 +10,7 @@ namespace StructInterop.Core
     {
         static readonly ConstructorInfo IntPtrCtor = typeof(IntPtr).GetTypeInfo().DeclaredConstructors.First(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(void*));
         static readonly MethodInfo MarshalCopy = typeof(Marshal).GetTypeInfo().GetDeclaredMethods("Copy").First(x => x.GetParameters()[1].ParameterType == typeof(byte[]));
+
         private static class DelegateHolder<T> where T : struct
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
@@ -34,7 +35,6 @@ namespace StructInterop.Core
                     typeof(byte[]),
                     new[] { TypeOfT },
                     typeof(StructInterop).GetTypeInfo().Assembly.ManifestModule);
-                //dm.DefineParameter(1, ParameterAttributes.None, "value");
                 
                 var generator = dm.GetILGenerator();
                 generator.DeclareLocal(typeof(byte[]));
@@ -78,7 +78,6 @@ namespace StructInterop.Core
                                             TypeOfT,
                                             new[] { typeof(byte[]) },
                                             typeof(StructInterop).GetTypeInfo().Assembly.ManifestModule);
-                //dm.DefineParameter(1, ParameterAttributes.None, "data");
                 var generator = dm.GetILGenerator();
                 generator.DeclareLocal(typeof(byte).MakePointerType(), pinned: true);
                 generator.DeclareLocal(TypeOfT);
