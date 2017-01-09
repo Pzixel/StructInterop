@@ -3,18 +3,18 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
-namespace StructInterop
+namespace StructInterop.Core
 {
-    public static class StructInterOp
+    public static class StructInterop
     {
-        static readonly ConstructorInfo IntPtrCtor = typeof(IntPtr).GetConstructor(new[] { typeof(void*) });
-        static readonly MethodInfo MarshalCopy = typeof(Marshal).GetMethod("Copy", new[] { typeof(IntPtr), typeof(byte[]), typeof(int), typeof(int) });
+        static readonly ConstructorInfo IntPtrCtor = typeof(IntPtr).GetTypeInfo().GetConstructor(new[] { typeof(void*) });
+        static readonly MethodInfo MarshalCopy = typeof(Marshal).GetTypeInfo().GetMethod("Copy", new[] { typeof(IntPtr), typeof(byte[]), typeof(int), typeof(int) });
         private static class DelegateHolder<T> where T : struct
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             // ReSharper disable StaticMemberInGenericType
             public static readonly Type TypeOfT = typeof(T);
-            public static readonly int SizeInBytes = Marshal.SizeOf(TypeOfT);
+            public static readonly int SizeInBytes = Marshal.SizeOf<T>();
 
             public static readonly Func<T, byte[]> Serialize = CreateSerializationDelegate();
             public static readonly Func<byte[], T> Deserialize = CreateDeserializationDelegate();
@@ -32,8 +32,8 @@ namespace StructInterop
                 var dm = new DynamicMethod("Serialize" + TypeOfT.Name,
                     typeof(byte[]),
                     new[] { TypeOfT },
-                    Assembly.GetExecutingAssembly().ManifestModule);
-                dm.DefineParameter(1, ParameterAttributes.None, "value");
+                    typeof(StructInterop).GetTypeInfo().Assembly.ManifestModule);
+                //dm.DefineParameter(1, ParameterAttributes.None, "value");
 
                 var generator = dm.GetILGenerator();
                 generator.DeclareLocal(typeof(byte[]));
@@ -76,8 +76,8 @@ namespace StructInterop
                 var dm = new DynamicMethod("Deserialize" + TypeOfT.Name,
                                             TypeOfT,
                                             new[] { typeof(byte[]) },
-                                            Assembly.GetExecutingAssembly().ManifestModule);
-                dm.DefineParameter(1, ParameterAttributes.None, "data");
+                                            typeof(StructInterop).GetTypeInfo().Assembly.ManifestModule);
+                //dm.DefineParameter(1, ParameterAttributes.None, "data");
                 var generator = dm.GetILGenerator();
                 generator.DeclareLocal(typeof(byte).MakePointerType(), pinned: true);
                 generator.DeclareLocal(TypeOfT);
